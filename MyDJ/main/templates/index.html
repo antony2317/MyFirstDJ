@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+
+<html>
+<head>
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Список вопросов</h1>
+
+        {% for question in questions %}
+            <div class="question-card">
+                <div class="question-header">
+                    <h3 class="question-text">{{ question.question_text }}</h3>
+                    <p class="pub-date">📅 {{ question.pub_date|date:"d E Y H:i" }}</p>
+                </div>
+
+                <ul class="choice-list">
+                    {% for choice in question.choice_set.all %}
+                        <li class="choice-item">
+                            <span class="choice-text">{{ choice.choice_text }}</span>
+                            <span class="votes-count">{{ choice.votes }} голосов</span>
+                        </li>
+                    {% empty %}
+                        <li class="no-choices">😕 Нет вариантов ответа</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% empty %}
+            <div class="empty-state">
+                <p>🤷‍♂️ Нет доступных вопросов</p>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
